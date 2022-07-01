@@ -8,24 +8,25 @@
 class Client : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString input WRITE setInput)
+    Q_PROPERTY(QString result READ result NOTIFY resultChanged)
 public:
-    explicit Client(QObject *parent = nullptr)
-    {
-        socket = new QTcpSocket(this);
-        connect(socket, SIGNAL(readyRead()), this, SLOT(foo()));
-        socket->connectToHost("127.0.0.1", 5678);
-    }
+    explicit Client(QObject *parent = nullptr);
 
+    QString result();
 public slots:
-    void foo()
-    {
-        QString str(socket->readAll());
-        qDebug() << str;
-    }
+    void setInput(QString i);
+private slots:
+    void displayError(QAbstractSocket::SocketError socketError);
+    void readResult();
+signals:
+    void inputChanged();
+    void resultChanged();
 
 private:
-    QTcpSocket* socket = nullptr;
-
+    QTcpSocket* m_socket = nullptr;
+    QString m_input;
+    QString m_result;
 };
 
 #endif // CLIENT_H
