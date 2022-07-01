@@ -18,6 +18,7 @@ find_package(Qt5 REQUIRED COMPONENTS Network)
 add_executable(calculator_server
   main.cpp
   server.h server.cpp
+  calculator.h calculator.cpp
 )
 #target_link_libraries(calculator_server PRIVATE Qt5::Network)
 target_link_libraries(calculator_server Qt${QT_VERSION_MAJOR}::Core Qt5::Network)
