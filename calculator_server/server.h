@@ -7,20 +7,33 @@
 #include <QDebug>
 
 #include "calculator.h"
+#include "calculatorthread.h"
 
-class Server : public QObject
+class Server : public QTcpServer
 {
     Q_OBJECT
 public:
-    explicit Server(QObject *parent = nullptr);
+    explicit Server(QObject *parent = nullptr)
+        : QTcpServer(parent)
+    {}
 
-private slots:
-    void onNewConnection();
-    void readSock();
+    void startServer()
+    {
+        if (!listen(QHostAddress::Any, 5678))
+        {
+            qDebug() << "Not working";
+        } else {
+            qDebug() << "Working fine";
+        }
+    }
 
-private:
-    QTcpServer* tcpServer = nullptr;
-    QTcpSocket* clientSocket = nullptr;
+protected:
+    void incomingConnection(qintptr socketDescriptor) override
+    {
+        CalculatorThread* thread = new CalculatorThread(socketDescriptor);
+        connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+        thread->start();
+    }
 };
 
 #endif // SERVER_H

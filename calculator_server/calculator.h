@@ -9,14 +9,11 @@ class Calculator : public QObject
     Q_OBJECT
 public:
     explicit Calculator(QObject *parent = nullptr);
-    Calculator(QString&& example);
 
 public:
     bool isCorrect();
     double result();
-
-private:
-    void calculate();
+    void calculate(QString& example);
 
 private:
     QStringList m_example;

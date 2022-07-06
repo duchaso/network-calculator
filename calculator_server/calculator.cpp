@@ -2,17 +2,9 @@
 
 Calculator::Calculator(QObject *parent)
     : QObject{parent}
-{
-
-}
-
-Calculator::Calculator(QString &&example)
-    : m_example{example.split(' ')}
     , m_correctExample{true}
     , m_result{0}
-{
-    calculate();
-}
+{}
 
 bool Calculator::isCorrect()
 {
@@ -24,10 +16,11 @@ double Calculator::result()
     return m_result;
 }
 
-void Calculator::calculate()
+void Calculator::calculate(QString& example)
 {
     double op2 = 0;
     bool ok = false;
+    m_example = example.split(' ');
 
     foreach (const QString& i, m_example)
     {
