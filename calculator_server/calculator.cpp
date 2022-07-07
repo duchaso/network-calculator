@@ -37,6 +37,18 @@ void Calculator::calculate(QString& example)
                 op2 = m_stack.pop();
                 m_stack.push(m_stack.pop() - op2);
                 break;
+            case '*':
+                m_stack.push(m_stack.pop() * m_stack.pop());
+                break;
+            case '/':
+                op2 = m_stack.pop();
+                if (op2 == 0)
+                {
+                    throw std::runtime_error("Division by zero");
+                    return;
+                }
+                m_stack.push(m_stack.pop() / op2);
+                break;
             default:
                 m_correctExample = false;
                 return;
