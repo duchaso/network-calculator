@@ -21,5 +21,6 @@ add_executable(calculator_server
   calculator.h calculator.cpp
   calculatorthread.h calculatorthread.cpp
 )
-#target_link_libraries(calculator_server PRIVATE Qt5::Network)
 target_link_libraries(calculator_server Qt${QT_VERSION_MAJOR}::Core Qt5::Network)
+
+add_subdirectory(gtests)
