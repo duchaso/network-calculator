@@ -13,27 +13,12 @@ class Server : public QTcpServer
 {
     Q_OBJECT
 public:
-    explicit Server(QObject *parent = nullptr)
-        : QTcpServer(parent)
-    {}
+    explicit Server(QObject *parent = nullptr);
 
-    void startServer()
-    {
-        if (!listen(QHostAddress::Any, 5678))
-        {
-            qDebug() << "Not working";
-        } else {
-            qDebug() << "Working fine";
-        }
-    }
+    void startServer();
 
 protected:
-    void incomingConnection(qintptr socketDescriptor) override
-    {
-        CalculatorThread* thread = new CalculatorThread(socketDescriptor);
-        connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-        thread->start();
-    }
+    void incomingConnection(qintptr socketDescriptor) override;
 };
 
 #endif // SERVER_H
