@@ -1,26 +1,24 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include "calculator.h"
+#include "calculatorthread.h"
+
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QDebug>
 
-#include "calculator.h"
-
-class Server : public QObject
+class Server : public QTcpServer
 {
     Q_OBJECT
 public:
     explicit Server(QObject *parent = nullptr);
 
-private slots:
-    void onNewConnection();
-    void readSock();
+    void startServer();
 
-private:
-    QTcpServer* tcpServer = nullptr;
-    QTcpSocket* clientSocket = nullptr;
+protected:
+    void incomingConnection(qintptr socketDescriptor) override;
 };
 
 #endif // SERVER_H

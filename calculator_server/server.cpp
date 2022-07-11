@@ -1,33 +1,26 @@
 #include "server.h"
 
+namespace {
+    constexpr auto PORT = 5678;
+}
+
 Server::Server(QObject *parent)
-    : QObject{parent}
+    : QTcpServer(parent)
+{}
+
+void Server::startServer()
 {
-    tcpServer = new QTcpServer(this);
-    connect(tcpServer, SIGNAL(newConnection()),
-            this, SLOT(onNewConnection()));
-    if (!tcpServer->listen(QHostAddress::Any, 5678))
+    if (!listen(QHostAddress::Any, PORT))
     {
         qDebug() << "Not working";
-        return;
-    }
-}
-
-void Server::onNewConnection()
-{
-    clientSocket = tcpServer->nextPendingConnection();
-    connect(clientSocket, SIGNAL(readyRead()), this, SLOT(readSock()));
-}
-
-void Server::readSock()
-{
-    QString example(clientSocket->readAll());
-    Calculator calculator(std::move(example));
-    if (calculator.isCorrect())
-    {
-        auto out = QString::number(calculator.result()).toStdString();
-        clientSocket->write(out.c_str());
     } else {
-        clientSocket->write("#");
+        qDebug() << "Working fine";
     }
+}
+
+void Server::incomingConnection(qintptr socketDescriptor)
+{
+    CalculatorThread* thread = new CalculatorThread(socketDescriptor);
+    connect(thread, &CalculatorThread::finished, thread, &CalculatorThread::deleteLater);
+    thread->start();
 }

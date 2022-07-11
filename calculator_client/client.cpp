@@ -1,12 +1,17 @@
 #include "client.h"
 
+namespace {
+    constexpr auto IP = "127.0.0.1";
+    constexpr auto PORT = 5678;
+}
+
 Client::Client(QObject *parent)
     : QObject{parent}
     , m_socket{new QTcpSocket(this)}
 {
-    connect(m_socket, SIGNAL(readyRead()), this, SLOT(readResult()));
-    connect(m_socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
-            this, SLOT(displayError(QAbstractSocket::SocketError)));
+    connect(m_socket, &QTcpSocket::readyRead, this, &Client::readResult);
+    connect(m_socket, &QTcpSocket::errorOccurred,
+            this, &Client::displayError);
 }
 
 QString Client::result()
@@ -18,7 +23,7 @@ void Client::setInput(QString i)
 {
     m_input = i;
     m_socket->abort();
-    m_socket->connectToHost("127.0.0.1", 5678);
+    m_socket->connectToHost(IP, PORT);
     m_socket->write(i.toStdString().c_str());
 }
 
