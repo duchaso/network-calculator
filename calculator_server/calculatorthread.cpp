@@ -15,8 +15,8 @@ void CalculatorThread::run()
         return;
     }
 
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()), Qt::DirectConnection);
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(socket, &QTcpSocket::readyRead, this, &CalculatorThread::readyRead, Qt::DirectConnection);
+    connect(socket, &QTcpSocket::disconnected, this, &CalculatorThread::disconnected);
 
     qDebug() << socketDescriptor << " Client connected";
 

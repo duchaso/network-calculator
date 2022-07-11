@@ -4,7 +4,7 @@
 TEST(Calculation, AdditionWorks)
 {
     Calculator c;
-    QString ex("2 2 +");
+    QString ex("2 + 2");
     c.calculate(ex);
     EXPECT_EQ(c.result(), 4);
 }
@@ -12,7 +12,7 @@ TEST(Calculation, AdditionWorks)
 TEST(Calculation, SubtractionWorks)
 {
     Calculator c;
-    QString ex("4 2 -");
+    QString ex("4 - 2");
     c.calculate(ex);
     EXPECT_EQ(c.result(), 2);
 }
@@ -20,7 +20,7 @@ TEST(Calculation, SubtractionWorks)
 TEST(Calculation, MultiplicationWorks)
 {
     Calculator c;
-    QString ex("4 2 *");
+    QString ex("4 * 2");
     c.calculate(ex);
     EXPECT_EQ(c.result(), 8);
 }
@@ -28,7 +28,7 @@ TEST(Calculation, MultiplicationWorks)
 TEST(Calculation, DivisionWorks)
 {
     Calculator c;
-    QString ex("4 2 /");
+    QString ex("4 / 2");
     c.calculate(ex);
     EXPECT_EQ(c.result(), 2);
 }
@@ -36,7 +36,7 @@ TEST(Calculation, DivisionWorks)
 TEST(Calculation, DivisionByZero)
 {
     Calculator c;
-    QString ex("4 0 /");
+    QString ex("4 / 0");
 
     try
     {

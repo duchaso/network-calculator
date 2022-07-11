@@ -1,7 +1,8 @@
 #include "server.h"
 
-
-
+namespace {
+    constexpr auto PORT = 5678;
+}
 
 Server::Server(QObject *parent)
     : QTcpServer(parent)
@@ -9,7 +10,7 @@ Server::Server(QObject *parent)
 
 void Server::startServer()
 {
-    if (!listen(QHostAddress::Any, 5678))
+    if (!listen(QHostAddress::Any, PORT))
     {
         qDebug() << "Not working";
     } else {
@@ -20,6 +21,6 @@ void Server::startServer()
 void Server::incomingConnection(qintptr socketDescriptor)
 {
     CalculatorThread* thread = new CalculatorThread(socketDescriptor);
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    connect(thread, &CalculatorThread::finished, thread, &CalculatorThread::deleteLater);
     thread->start();
 }

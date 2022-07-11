@@ -1,13 +1,13 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include "calculator.h"
+#include "calculatorthread.h"
+
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QDebug>
-
-#include "calculator.h"
-#include "calculatorthread.h"
 
 class Server : public QTcpServer
 {

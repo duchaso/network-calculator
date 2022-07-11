@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QStack>
+#include <QMap>
 
 class Calculator : public QObject
 {
@@ -16,10 +17,14 @@ public:
     void calculate(QString& example);
 
 private:
+    void convertToPolishNotation(QString& example);
+
+private:
     QStringList m_example;
     QStack<double> m_stack;
     bool m_correctExample;
     double m_result;
+    static const QMap<QString, int> m_opPrecedence;
 };
 
 #endif // CALCULATOR_H

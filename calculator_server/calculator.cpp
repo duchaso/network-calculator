@@ -6,6 +6,13 @@ Calculator::Calculator(QObject *parent)
     , m_result{0}
 {}
 
+const QMap<QString, int> Calculator::m_opPrecedence {
+    {"+", 0},
+    {"-", 0},
+    {"*", 1},
+    {"/", 1}
+};
+
 bool Calculator::isCorrect()
 {
     return m_correctExample;
@@ -20,7 +27,8 @@ void Calculator::calculate(QString& example)
 {
     double op2 = 0;
     bool ok = false;
-    m_example = example.split(' ');
+
+    convertToPolishNotation(example);
 
     foreach (const QString& i, m_example)
     {
@@ -57,4 +65,39 @@ void Calculator::calculate(QString& example)
     }
     m_result = m_stack.pop();
     m_correctExample = true;
+}
+
+void Calculator::convertToPolishNotation(QString &example)
+{
+    auto tmpList = example.split(' ');
+    QStack<QString> stOp;
+
+    bool ok = false;
+    foreach(const auto& i, tmpList)
+    {
+        i.toDouble(&ok);
+        if (ok)
+        {
+            m_example.push_back(i);
+        } else if (i == "(") {
+            stOp.push(i);
+        } else if (i == ")") {
+            while (!stOp.isEmpty() && stOp.top() != "(")
+            {
+                m_example.push_back(stOp.pop());
+            }
+            stOp.pop();
+        } else {
+            while (!stOp.isEmpty() && m_opPrecedence[stOp.top()] >= m_opPrecedence[i])
+            {
+                m_example.push_back(stOp.pop());
+            }
+            stOp.push(i);
+        }
+    }
+
+    while (!stOp.isEmpty())
+    {
+        m_example.push_back(stOp.pop());
+    }
 }

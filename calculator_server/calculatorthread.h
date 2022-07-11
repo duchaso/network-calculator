@@ -1,13 +1,14 @@
 #ifndef CALCULATORTHREAD_H
 #define CALCULATORTHREAD_H
 
+#include "calculator.h"
+
 #include <QThread>
 #include <QTcpSocket>
 #include <QObject>
 
 #include <memory>
 
-#include "calculator.h"
 
 class CalculatorThread : public QThread
 {
