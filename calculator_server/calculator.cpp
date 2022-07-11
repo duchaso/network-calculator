@@ -29,7 +29,6 @@ void Calculator::calculate(QString& example)
     bool ok = false;
 
     convertToPolishNotation(example);
-
     foreach (const QString& i, m_example)
     {
         double d = i.toDouble(&ok);
